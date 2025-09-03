@@ -18,7 +18,8 @@ namespace EquipmentWheel
     [BepInPlugin("virtuacode.valheim.equipwheel", "Equip Wheel Mod", "0.0.1")]
     public class EquipWheel : BaseUnityPlugin, WheelManager.IWheel
     {
-        private static Harmony harmony;
+        private static Harmony _harmony;
+        
         public static ManualLogSource MyLogger = BepInEx.Logging.Logger.CreateLogSource(Assembly.GetExecutingAssembly().GetName().Name);
 
         public static ConfigEntry<KeyboardShortcut> Hotkey;
@@ -53,8 +54,8 @@ namespace EquipmentWheel
 
 
         private static EquipWheel instance;
-        public static KeyCode replacedKey = KeyCode.None;
-        public static List<string> replacedButtons = new List<string>();
+        public static KeyCode ReplacedKey = KeyCode.None;
+        public static List<string> ReplacedButtons = new List<string>();
         public static float JoyStickIgnoreTime = 0;
         public static EquipGui Gui;
 
@@ -113,8 +114,8 @@ namespace EquipmentWheel
 
                 bool canOpenMenu = !(localPlayer == null || localPlayer.IsDead() || localPlayer.InCutscene() || localPlayer.IsTeleporting())
                     && !(!TakeInput(true) || InInventoryEtc()) 
-                    && (!WheelManager.inventoryVisible) 
-                    && !(IsUsingUseButton() && WheelManager.pressedOnHovering);
+                    && (!WheelManager.InventoryVisible) 
+                    && !(IsUsingUseButton() && WheelManager.PressedOnHovering);
                 return canOpenMenu;
             }
         }
@@ -217,7 +218,7 @@ namespace EquipmentWheel
                 return;
             }
 
-            harmony = Harmony.CreateAndPatchAll(typeof(Patcher));
+            _harmony = Harmony.CreateAndPatchAll(typeof(Patcher));
 
             WheelManager.AddWheel(this);
 
@@ -241,7 +242,7 @@ namespace EquipmentWheel
         void OnDestroy()
         {
             WheelManager.RemoveWheel(this);
-            harmony?.UnpatchAll();
+            _harmony?.UnpatchAll();
         }
 
         public static bool BestMatchPressed
@@ -555,19 +556,19 @@ namespace EquipmentWheel
 
         private void HandlePressedHovering()
         {
-            if (WheelManager.pressedOnHovering)
+            if (WheelManager.PressedOnHovering)
             {
                 if (ZInput.GetButtonUp("JoyUse"))
                 {
-                    WheelManager.pressedOnHovering = false;
-                    WheelManager.hoverTextVisible = false;
+                    WheelManager.PressedOnHovering = false;
+                    WheelManager.HoverTextVisible = false;
                     return;
                 }
             }
 
             if (EquipWheel.IsShortcutDown && EquipWheel.IsUsingUseButton())
             {
-                WheelManager.pressedOnHovering = WheelManager.pressedOnHovering || WheelManager.hoverTextVisible;
+                WheelManager.PressedOnHovering = WheelManager.PressedOnHovering || WheelManager.HoverTextVisible;
             }
         }
 
@@ -949,10 +950,10 @@ namespace EquipmentWheel
 
                         string itemName;
 
-                        if (EpicLootWrapper.instance != null)
+                        if (EpicLootWrapper.Instance != null)
                         {
-                            var itemColor = EpicLootWrapper.instance.GetItemColor(item);
-                            itemName = Localization.instance.Localize(EpicLootWrapper.instance.GetItemName(item, itemColor));
+                            var itemColor = EpicLootWrapper.Instance.GetItemColor(item);
+                            itemName = Localization.instance.Localize(EpicLootWrapper.Instance.GetItemName(item, itemColor));
                         }
                         else
                         {
@@ -971,10 +972,10 @@ namespace EquipmentWheel
 
                         string itemName;
 
-                        if (EpicLootWrapper.instance != null)
+                        if (EpicLootWrapper.Instance != null)
                         {
-                            var itemColor = EpicLootWrapper.instance.GetItemColor(item);
-                            itemName = Localization.instance.Localize(EpicLootWrapper.instance.GetItemName(item, itemColor));
+                            var itemColor = EpicLootWrapper.Instance.GetItemColor(item);
+                            itemName = Localization.instance.Localize(EpicLootWrapper.Instance.GetItemName(item, itemColor));
                         }
                         else
                         {
@@ -1073,15 +1074,15 @@ namespace EquipmentWheel
                     InventoryGui.instance.m_moveItemEffects.Create(base.transform.position, Quaternion.identity, null, 1f, -1);
                     text.gameObject.SetActive(true);
 
-                    if (EpicLootWrapper.instance != null)
+                    if (EpicLootWrapper.Instance != null)
                     {
-                        var itemColor = EpicLootWrapper.instance.GetItemColor(CurrentItem);
+                        var itemColor = EpicLootWrapper.Instance.GetItemColor(CurrentItem);
 
                         if (itemColor.Equals(Color.white) || !EquipWheel.UseRarityColoring.Value)
                             itemColor = EquipWheel.GetHighlightColor;
 
 
-                        text.text = Localization.instance.Localize(EpicLootWrapper.instance.GetItemName(CurrentItem, itemColor));
+                        text.text = Localization.instance.Localize(EpicLootWrapper.Instance.GetItemName(CurrentItem, itemColor));
                     } else
                     {
                         text.text = Localization.instance.Localize(CurrentItem.m_shared.m_name);
@@ -1099,9 +1100,9 @@ namespace EquipmentWheel
 
             var color = CurrentItem == null ? new Color(0, 0, 0, 0.5f) : EquipWheel.GetHighlightColor;
 
-            if (CurrentItem != null && EpicLootWrapper.instance != null)
+            if (CurrentItem != null && EpicLootWrapper.Instance != null)
             {
-                var itemColor = EpicLootWrapper.instance.GetItemColor(CurrentItem);
+                var itemColor = EpicLootWrapper.Instance.GetItemColor(CurrentItem);
 
                 if (!itemColor.Equals(Color.white) && EquipWheel.UseRarityColoring.Value)
                 {
@@ -1240,8 +1241,8 @@ namespace EquipmentWheel
                     elementData5.m_amount.gameObject.SetActive(false);
                 }
 
-                if (EpicLootWrapper.instance != null)
-                    EpicLootWrapper.instance.ModifyElement(elementData5, itemData2);
+                if (EpicLootWrapper.Instance != null)
+                    EpicLootWrapper.Instance.ModifyElement(elementData5, itemData2);
 
                 elem_index++;
             }

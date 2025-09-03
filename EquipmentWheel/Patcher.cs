@@ -11,7 +11,7 @@ namespace EquipmentWheel {
         [HarmonyPostfix]
         public static void IsVisible_Postfix(ref bool __result)
         {
-            WheelManager.inventoryVisible = __result;
+            WheelManager.InventoryVisible = __result;
 
             __result = __result || WheelManager.AnyVisible;
         }
@@ -24,10 +24,10 @@ namespace EquipmentWheel {
             Interactable hoverable = hoverObject ? hoverObject.GetComponentInParent<Interactable>() : null;
             if (hoverable != null && !TextViewer.instance.IsVisible())
             {
-                WheelManager.hoverTextVisible = true;
+                WheelManager.HoverTextVisible = true;
             } else
             {
-                WheelManager.hoverTextVisible = false;
+                WheelManager.HoverTextVisible = false;
             }
 
         }

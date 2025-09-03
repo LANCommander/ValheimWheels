@@ -5,12 +5,12 @@ namespace EquipmentWheel
 {
     public sealed class WheelManager
     { 
-
-        private static readonly HashSet<IWheel> wheels = new HashSet<IWheel>();
-        private static IWheel activeWheel;
-        public static bool inventoryVisible = false;
-        public static bool hoverTextVisible = false;
-        public static bool pressedOnHovering = false;
+        private static readonly HashSet<IWheel> _wheels = new HashSet<IWheel>();
+        private static IWheel _activeWheel;
+        
+        public static bool InventoryVisible = false;
+        public static bool HoverTextVisible = false;
+        public static bool PressedOnHovering = false;
 
         public enum DPadButton
         {
@@ -24,7 +24,7 @@ namespace EquipmentWheel
         {
             get
             {
-                return wheels.Any(w => w.IsVisible());
+                return _wheels.Any(w => w.IsVisible());
             }
         }
 
@@ -43,7 +43,7 @@ namespace EquipmentWheel
             if (!wheel.IsVisible())
                 return;
 
-            foreach (var w in wheels)
+            foreach (var w in _wheels)
             {
                 if (!wheel.Equals(w))
                 {
@@ -51,40 +51,40 @@ namespace EquipmentWheel
                 }
             }
 
-            activeWheel = wheel;
+            _activeWheel = wheel;
         }
         
         public static bool IsActive(IWheel wheel)
         {
-            return wheel.Equals(activeWheel);
+            return wheel.Equals(_activeWheel);
         }
 
         public static bool AddWheel(IWheel wheel)
         {
-            return wheels.Add(wheel);
+            return _wheels.Add(wheel);
         }
 
         public static bool RemoveWheel(IWheel wheel)
         {
-            return wheels.Remove(wheel);
+            return _wheels.Remove(wheel);
         }
 
         public static bool BestMatchDown(IWheel wheel)
         {
-            if (!wheels.Contains(wheel))
+            if (!_wheels.Contains(wheel))
                 return false;
 
-            var result = wheels.OrderByDescending(w => w.GetKeyCountDown()).FirstOrDefault();
+            var result = _wheels.OrderByDescending(w => w.GetKeyCountDown()).FirstOrDefault();
 
             return wheel.Equals(result);
         }
 
         public static bool BestMatchPressed(IWheel wheel)
         {
-            if (!wheels.Contains(wheel))
+            if (!_wheels.Contains(wheel))
                 return false;
 
-            var result = wheels.OrderByDescending(w => w.GetKeyCountPressed()).FirstOrDefault();
+            var result = _wheels.OrderByDescending(w => w.GetKeyCountPressed()).FirstOrDefault();
 
             return wheel.Equals(result);
         }
@@ -93,7 +93,7 @@ namespace EquipmentWheel
         {
             float time = 0;
 
-            foreach (var w in wheels)
+            foreach (var w in _wheels)
             {
                 time += w.JoyStickIgnoreTime();
             }
