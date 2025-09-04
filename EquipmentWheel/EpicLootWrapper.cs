@@ -25,8 +25,63 @@ namespace EquipmentWheel
         public static EpicLootWrapper Instance;
 
 
-        private EpicLootWrapper()
+        public EpicLootWrapper(PluginInfo pluginInfo)
         {
+            _epicLootAssembly = pluginInfo.Instance.GetType().Assembly;
+
+            if (_epicLootAssembly == null)
+                throw new Exception("Assembly for EpicLoot cannot be resolved");
+
+            foreach (var type in _epicLootAssembly.GetExportedTypes())
+                switch (type.FullName)
+                {
+                    case "EpicLoot.ItemBackgroundHelper":
+                        _itemBackgroundHelper = type;
+                        break;
+
+                    case "EpicLoot.EpicLoot":
+                        _epicLoot = type;
+                        break;
+
+                    case "EpicLoot.ItemDataExtensions":
+                        _itemDataExtensions = type;
+                        break;
+                }
+
+            if (_itemBackgroundHelper == null)
+                throw new Exception("Type EpicLoot.ItemBackgroundHelper cannot be resolved");
+
+            if (_epicLoot == null)
+                throw new Exception("Type EpicLoot.EpicLoot cannot be resolved");
+
+            if (_itemDataExtensions == null)
+                throw new Exception("Type EpicLoot.ItemDataExtensions cannot be resolved");
+
+            _createAndGetMagicItemBackgroundImage = _itemBackgroundHelper.GetMethod("CreateAndGetMagicItemBackgroundImage",
+                new Type[] { typeof(GameObject), typeof(GameObject), typeof(bool) });
+
+            if (_createAndGetMagicItemBackgroundImage == null)
+                throw new Exception("Method CreateAndGetMagicItemBackgroundImage cannot be resolved");
+
+            _getMagicItemBackgroundSprite = _epicLoot.GetMethod("GetMagicItemBgSprite", new Type[] { });
+
+            if (_getMagicItemBackgroundSprite == null)
+                throw new Exception("Method GetMagicItemBgSprite cannot be resolved");
+
+            _useMagicBackground = _itemDataExtensions.GetMethod("UseMagicBackground", new Type[] { typeof(ItemDrop.ItemData) });
+
+            if (_useMagicBackground == null)
+                throw new Exception("Method UseMagicBackground cannot be resolved");
+
+            _getRarityColor = _itemDataExtensions.GetMethod("GetRarityColor", new Type[] { typeof(ItemDrop.ItemData) });
+
+            if (_getRarityColor == null)
+                throw new Exception("Method GetRarityColor cannot be resolved");
+
+            _getDecoratedName = _itemDataExtensions.GetMethod("GetDecoratedName", new Type[] { typeof(ItemDrop.ItemData), typeof(string) });
+
+            if (_getDecoratedName == null)
+                throw new Exception("Method GetDecoratedName cannot be resolved");
         }
 
         public static EpicLootWrapper CreateInstance()
@@ -36,74 +91,15 @@ namespace EquipmentWheel
             try
             {
                 pluginInfo = Chainloader.PluginInfos["randyknapp.mods.epicloot"];
-            } catch (KeyNotFoundException)
+            }
+            catch (KeyNotFoundException)
             {
                 return null;
             }
 
-            var wrapper = new EpicLootWrapper();
-            var assembly = pluginInfo.Instance.GetType().Assembly;
+            Instance = new EpicLootWrapper(pluginInfo);
 
-            if (assembly == null)
-            {
-                throw new Exception("Assembly for EpicLoot cannot be resolved");
-            }
-
-            wrapper._epicLootAssembly = assembly;
-
-            var types = wrapper._epicLootAssembly.GetExportedTypes();
-            foreach (var t in types)
-            {
-                if (t.FullName == "EpicLoot.ItemBackgroundHelper")
-                    wrapper._itemBackgroundHelper = t;
-
-                if (t.FullName == "EpicLoot.EpicLoot")
-                    wrapper._epicLoot = t;
-
-                if (t.FullName == "EpicLoot.ItemDataExtensions")
-                    wrapper._itemDataExtensions = t;
-            }
-
-            if (wrapper._itemBackgroundHelper == null)
-                throw new Exception("Type EpicLoot.ItemBackgroundHelper cannot be resolved");
-
-            if (wrapper._epicLoot == null)
-                throw new Exception("Type EpicLoot.EpicLoot cannot be resolved");
-
-            if (wrapper._itemDataExtensions == null)
-                throw new Exception("Type EpicLoot.ItemDataExtensions cannot be resolved");
-
-            wrapper._createAndGetMagicItemBackgroundImage = wrapper._itemBackgroundHelper.GetMethod("CreateAndGetMagicItemBackgroundImage",
-              new Type[] { typeof(GameObject), typeof(GameObject), typeof(bool) });
-
-            if (wrapper._createAndGetMagicItemBackgroundImage == null)
-                throw new Exception("Method CreateAndGetMagicItemBackgroundImage cannot be resolved");
-
-            wrapper._getMagicItemBackgroundSprite = wrapper._epicLoot.GetMethod("GetMagicItemBgSprite", new Type[] { });
-
-            if (wrapper._getMagicItemBackgroundSprite == null)
-                throw new Exception("Method GetMagicItemBgSprite cannot be resolved");
-
-            wrapper._useMagicBackground = wrapper._itemDataExtensions.GetMethod("UseMagicBackground", new Type[] { typeof(ItemDrop.ItemData) });
-
-            if (wrapper._useMagicBackground == null)
-                throw new Exception("Method UseMagicBackground cannot be resolved");
-
-            wrapper._getRarityColor = wrapper._itemDataExtensions.GetMethod("GetRarityColor", new Type[] { typeof(ItemDrop.ItemData) });
-
-            if (wrapper._getRarityColor == null)
-                throw new Exception("Method GetRarityColor cannot be resolved");
-
-            wrapper._getDecoratedName = wrapper._itemDataExtensions.GetMethod("GetDecoratedName", new Type[] { typeof(ItemDrop.ItemData), typeof(string) });
-
-            if (wrapper._getDecoratedName == null)
-                throw new Exception("Method GetDecoratedName cannot be resolved");
-
-
-            Instance = wrapper;
-
-            return wrapper;
-
+            return Instance;
         }
 
         public string GetItemName(ItemDrop.ItemData item, Color color)
