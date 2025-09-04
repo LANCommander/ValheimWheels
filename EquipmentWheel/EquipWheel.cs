@@ -221,8 +221,7 @@ namespace EquipmentWheel
             _harmony = Harmony.CreateAndPatchAll(typeof(Patcher));
 
             WheelManager.AddWheel(this);
-
-#if EQUIPWHEEL_ONE
+            
             try
             {
                 EpicLootWrapper.CreateInstance();
@@ -234,7 +233,6 @@ namespace EquipmentWheel
                 LogErr(e.Message);
                 LogErr("Failed to initialize EpicLootWrapper. Probably a compatibility issue. Please inform the mod creator of EquipmentWheel about this issue! (https://www.nexusmods.com/valheim/mods/536)");
             }
-#endif
 
             Log(this.GetType().Namespace + " Loaded!");
         }
@@ -258,14 +256,12 @@ namespace EquipmentWheel
 
         public static void TryHideHotkeyBar()
         {
-#if EQUIPWHEEL_ONE
             HotkeyBar hotKeyBar = Hud.instance.transform.Find("hudroot/HotKeyBar").GetComponent<HotkeyBar>();
 
             if (hotKeyBar == null)
                 return;
 
-            hotKeyBar.gameObject.SetActive(!EquipmentWheel.HideHotkeyBar.Value);
-#endif
+            hotKeyBar.gameObject.SetActive(!HideHotkeyBar.Value);
         }
 
         public static bool BestMatchDown
