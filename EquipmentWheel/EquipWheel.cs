@@ -138,34 +138,81 @@ namespace EquipmentWheel
             instance = this;
 
             /* General */
-            ModEnabled = Config.Bind("General", "ModEnabled", true, "Enable mod when value is true");
+            ModEnabled = Config.Bind(
+                "General",
+                "ModEnabled",
+                true,
+                "Enable mod when value is true");
 
             /* Input */
-            Hotkey = Config.Bind("Input", "Hotkey", KeyboardShortcut.Deserialize("G"),
-    "Hotkey for opening equip wheel menu");
-            HotkeyDPad = Config.Bind("Input", "HotkeyDPad", WheelManager.DPadButton.None, "Hotkey on the D-Pad (None, Left, Right or LeftOrRight)");
-            UseSitButton = Config.Bind("Input", "UseSitButton", false, "When enabled use the sit button as hotkey (HotkeyDPad has to be set to None)");
-            TriggerOnRelease = Config.Bind("Input", "TriggerOnRelease", true,
+            Hotkey = Config.Bind(
+                "Input",
+                "Hotkey",
+                KeyboardShortcut.Deserialize("G"),
+                "Hotkey for opening equip wheel menu");
+
+            HotkeyDPad = Config.Bind(
+                "Input",
+                "HotkeyDPad",
+                WheelManager.DPadButton.None, 
+                "Hotkey on the D-Pad (None, Left, Right or LeftOrRight)");
+
+            UseSitButton = Config.Bind(
+                "Input", 
+                "UseSitButton", 
+                false, 
+                "When enabled use the sit button as hotkey (HotkeyDPad has to be set to None)");
+
+            TriggerOnRelease = Config.Bind(
+                "Input", 
+                "TriggerOnRelease", 
+                true,
                 "Releasing the Hotkey will equip/use the selected item");
-            TriggerOnClick = Config.Bind("Input", "TriggerOnClick", false,
+
+            TriggerOnClick = Config.Bind(
+                "Input", 
+                "TriggerOnClick", 
+                false,
                 "Click with left mouse button will equip/use the selected item");
-            ToggleMenu = Config.Bind("Input", "ToggleMenu", false,
+
+            ToggleMenu = Config.Bind(
+                "Input", 
+                "ToggleMenu",
+                false,
                 "When enabled the equip wheel will toggle between hidden/visible when the hotkey was pressed");
 
             /* Appereance */
-            HighlightColor = Config.Bind("Appereance", "HighlightColor", new Color(0.414f, 0.734f, 1f),
+            HighlightColor = Config.Bind(
+                "Appereance", 
+                "HighlightColor", 
+                new Color(0.414f, 0.734f, 1f),
                 "Color of the highlighted selection");
-            GuiScale = Config.Bind("Appereance", "GuiScale", 0.5f, "Scale factor of the user interface");
 
-#if EQUIPWHEEL_ONE
-            HideHotkeyBar = Config.Bind("Appereance", "HideHotkeyBar", false, "Hides the top-left Hotkey Bar");
+            GuiScale = Config.Bind(
+                "Appereance", 
+                "GuiScale", 
+                0.5f, 
+                "Scale factor of the user interface");
+            
+            HideHotkeyBar = Config.Bind(
+                "Appereance", 
+                "HideHotkeyBar", 
+                false, 
+                "Hides the top-left Hotkey Bar");
 
             /* Misc */
-            EquipWhileRunning = Config.Bind("Misc", "EquipWhileRunning", true, "Allow to equip weapons while running");
-            AutoEquipShield = Config.Bind("Misc", "AutoEquipShield", true,
+            EquipWhileRunning = Config.Bind(
+                "Misc", 
+                "EquipWhileRunning", 
+                true, 
+                "Allow to equip weapons while running");
+
+            AutoEquipShield = Config.Bind(
+                "Misc", 
+                "AutoEquipShield", true,
                 "Enable auto equip of shield when one-handed weapon was equipped");
 
-            EquipmentWheel.HideHotkeyBar.SettingChanged += (e, args) =>
+            HideHotkeyBar.SettingChanged += (e, args) =>
             {
                 if (Hud.instance == null)
                     return;
@@ -175,35 +222,84 @@ namespace EquipmentWheel
                 if (hotKeyBar == null)
                     return;
 
-                hotKeyBar.gameObject.SetActive(!EquipmentWheel.HideHotkeyBar.Value);
+                hotKeyBar.gameObject.SetActive(!HideHotkeyBar.Value);
             };
-            IgnoreJoyStickDuration = Config.Bind("Input", "IgnoreJoyStickDuration", 500,
-                new ConfigDescription("Duration in milliseconds for ignoring left joystick input after button release",
-                    new AcceptableValueRange<int>(0, 2000)));
-#endif
+            
+            IgnoreJoyStickDuration = Config.Bind(
+                "Input", 
+                "IgnoreJoyStickDuration", 
+                500,
+                new ConfigDescription(
+                    "Duration in milliseconds for ignoring left joystick input after button release",
+                    new AcceptableValueRange<int>(0, 2000)
+                ));
 
-            InventoryRow = Config.Bind("Misc", "InventoryRow", 1,
-                new ConfigDescription("Row of the inventory that should be used for the equip wheel",
-                    new AcceptableValueRange<int>(1, 4)));
-            ItemFiltering = Config.Bind("Misc", "ItemFiltering", false,
+            InventoryRow = Config.Bind(
+                "Misc", 
+                "InventoryRow", 
+                1,
+                new ConfigDescription(
+                    "Row of the inventory that should be used for the equip wheel",
+                    new AcceptableValueRange<int>(1, 4)
+                ));
+
+            ItemFiltering = Config.Bind(
+                "Misc", 
+                "ItemFiltering", 
+                false,
                 "Will scan the whole inventory for items of the specified item types and Regex and show them in the equip wheel");
-            ItemType1 = Config.Bind("Misc", "ItemType1", ItemDrop.ItemData.ItemType.None,
+
+            ItemType1 = Config.Bind(
+                "Misc", 
+                "ItemType1", 
+                ItemDrop.ItemData.ItemType.None,
                 "Item type used for filtering items");
-            ItemType2 = Config.Bind("Misc", "ItemType2", ItemDrop.ItemData.ItemType.None,
+
+            ItemType2 = Config.Bind(
+                "Misc", 
+                "ItemType2", ItemDrop.ItemData.ItemType.None,
                 "Item type used for filtering items");
-            ItemType3 = Config.Bind("Misc", "ItemType3", ItemDrop.ItemData.ItemType.None,
+
+            ItemType3 = Config.Bind(
+                "Misc", 
+                "ItemType3", 
+                ItemDrop.ItemData.ItemType.None,
                 "Item type used for filtering items");
-            ItemType4 = Config.Bind("Misc", "ItemType4", ItemDrop.ItemData.ItemType.None,
+
+            ItemType4 = Config.Bind(
+                "Misc", 
+                "ItemType4", 
+                ItemDrop.ItemData.ItemType.None,
                 "Item type used for filtering items");
-            ItemType5 = Config.Bind("Misc", "ItemType5", ItemDrop.ItemData.ItemType.None,
+
+            ItemType5 = Config.Bind(
+                "Misc", 
+                "ItemType5", 
+                ItemDrop.ItemData.ItemType.None,
                 "Item type used for filtering items");
-            ItemType6 = Config.Bind("Misc", "ItemType6", ItemDrop.ItemData.ItemType.None,
+
+            ItemType6 = Config.Bind(
+                "Misc", 
+                "ItemType6", 
+                ItemDrop.ItemData.ItemType.None,
                 "Item type used for filtering items");
-            ItemRegex = Config.Bind("Misc", "ItemRegex", "",
+
+            ItemRegex = Config.Bind(
+                "Misc", 
+                "ItemRegex", 
+                "",
                 "Regex used for filtering items");
-            ItemRegexIgnore = Config.Bind("Misc", "ItemRegexIgnore", "",
-    "Regex used for ignoring items");
-            ItemRegexCaseSensitive = Config.Bind("Misc", "ItemRegexCaseSensitive", false,
+
+            ItemRegexIgnore = Config.Bind(
+                "Misc", 
+                "ItemRegexIgnore", 
+                "",
+                "Regex used for ignoring items");
+
+            ItemRegexCaseSensitive = Config.Bind(
+                "Misc", 
+                "ItemRegexCaseSensitive", 
+                false,
                 "When enabled the Regex will be case-sensitive");
 
             if (!ModEnabled.Value)
@@ -225,7 +321,13 @@ namespace EquipmentWheel
             try
             {
                 EpicLootWrapper.CreateInstance();
-                UseRarityColoring = Config.Bind("Appereance", "UseRarityColoring", true, "When enabled, the highlight color will be set to the rarity color of the selected item.");
+
+                UseRarityColoring = Config.Bind(
+                    "Appereance", 
+                    "UseRarityColoring", 
+                    true, 
+                    "When enabled, the highlight color will be set to the rarity color of the selected item.");
+
                 Log("Epicloot Mod installed. Applied compatibility patch.");
             }
             catch (Exception e)
