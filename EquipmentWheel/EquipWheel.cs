@@ -16,14 +16,14 @@ using System.Text.RegularExpressions;
 namespace EquipmentWheel
 {
     [BepInPlugin("virtuacode.valheim.equipwheel", "Equip Wheel Mod", "0.0.1")]
-    public class EquipWheel : BaseUnityPlugin, WheelManager.IWheel
+    public class EquipWheel : BaseUnityPlugin, IWheel
     {
         private static Harmony _harmony;
         
         public static ManualLogSource MyLogger = BepInEx.Logging.Logger.CreateLogSource(Assembly.GetExecutingAssembly().GetName().Name);
 
         public static ConfigEntry<KeyboardShortcut> Hotkey;
-        public static ConfigEntry<WheelManager.DPadButton> HotkeyDPad;
+        public static ConfigEntry<DPadButton> HotkeyDPad;
         public static ConfigEntry<bool> UseSitButton;
 
         public static ConfigEntry<bool> EquipWhileRunning;
@@ -125,7 +125,7 @@ namespace EquipmentWheel
 
         public static bool IsUsingUseButton()
         {
-            return ZInput.IsGamepadActive() && HotkeyDPad.Value == WheelManager.DPadButton.None && !UseSitButton.Value;
+            return ZInput.IsGamepadActive() && HotkeyDPad.Value == DPadButton.None && !UseSitButton.Value;
         }
 
         public void Awake()
@@ -149,7 +149,7 @@ namespace EquipmentWheel
             HotkeyDPad = Config.Bind(
                 "Input",
                 "HotkeyDPad",
-                WheelManager.DPadButton.None, 
+                DPadButton.None, 
                 "Hotkey on the D-Pad (None, Left, Right or LeftOrRight)");
 
             UseSitButton = Config.Bind(
@@ -383,19 +383,19 @@ namespace EquipmentWheel
                 {
                     switch (HotkeyDPad.Value)
                     {
-                        case WheelManager.DPadButton.None:
+                        case DPadButton.None:
                             if (UseSitButton.Value)
                                 return ZInput.GetButtonDown("JoySit");
                             else
                                 return ZInput.GetButtonDown("JoyUse");
 
-                        case WheelManager.DPadButton.Left:
+                        case DPadButton.Left:
                             return ZInput.GetButtonDown("JoyHotbarLeft");
 
-                        case WheelManager.DPadButton.Right:
+                        case DPadButton.Right:
                             return ZInput.GetButtonDown("JoyHotbarRight");
 
-                        case WheelManager.DPadButton.LeftOrRight:
+                        case DPadButton.LeftOrRight:
                              return ZInput.GetButtonDown("JoyHotbarRight") || ZInput.GetButtonDown("JoyHotbarLeft");
 
 
@@ -421,19 +421,19 @@ namespace EquipmentWheel
                 {
                     switch (HotkeyDPad.Value)
                     {
-                        case WheelManager.DPadButton.None:
+                        case DPadButton.None:
                             if (UseSitButton.Value)
                                 return ZInput.GetButtonUp("JoySit");
                             else
                                 return ZInput.GetButtonUp("JoyUse");
 
-                        case WheelManager.DPadButton.Left:
+                        case DPadButton.Left:
                             return ZInput.GetButtonUp("JoyHotbarLeft");
 
-                        case WheelManager.DPadButton.Right:
+                        case DPadButton.Right:
                             return ZInput.GetButtonUp("JoyHotbarRight");
 
-                        case WheelManager.DPadButton.LeftOrRight:
+                        case DPadButton.LeftOrRight:
                             return ZInput.GetButtonUp("JoyHotbarRight") || ZInput.GetButtonUp("JoyHotbarLeft");
 
                         default:
@@ -461,20 +461,20 @@ namespace EquipmentWheel
                 {
                     switch (HotkeyDPad.Value)
                     {
-                        case WheelManager.DPadButton.None:
+                        case DPadButton.None:
                             if (UseSitButton.Value)
                                 return ZInput.GetButton("JoySit");
                             else
                                 return ZInput.GetButton("JoyUse");
 
 
-                        case WheelManager.DPadButton.Left:
+                        case DPadButton.Left:
                             return ZInput.GetButton("JoyHotbarLeft");
 
-                        case WheelManager.DPadButton.Right:
+                        case DPadButton.Right:
                             return ZInput.GetButton("JoyHotbarRight");
 
-                        case WheelManager.DPadButton.LeftOrRight:
+                        case DPadButton.LeftOrRight:
                             return ZInput.GetButton("JoyHotbarRight") || ZInput.GetButton("JoyHotbarLeft");
 
                         default:
@@ -566,7 +566,7 @@ namespace EquipmentWheel
             return Assembly.GetExecutingAssembly().GetName().Name;
         }
 
-        float WheelManager.IWheel.JoyStickIgnoreTime()
+        float IWheel.JoyStickIgnoreTime()
         {
             return JoyStickIgnoreTime;
         }

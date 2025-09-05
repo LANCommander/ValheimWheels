@@ -160,7 +160,7 @@ namespace EquipmentWheel {
             if (EquipWheel.Instance == null)
                 return true;
 
-            if (EquipWheel.HotkeyDPad != null && EquipWheel.HotkeyDPad.Value == WheelManager.DPadButton.None)
+            if (EquipWheel.HotkeyDPad != null && EquipWheel.HotkeyDPad.Value == DPadButton.None)
                 return true;
 
             Player localPlayer = Player.m_localPlayer;
@@ -202,7 +202,7 @@ namespace EquipmentWheel {
             if (localPlayer == null)
                 return;
 
-            if (EquipWheel.UseSitButton.Value && EquipWheel.HotkeyDPad.Value == WheelManager.DPadButton.None && (ZInput.GetButtonDown("JoySit") || ZInput.GetButtonUp("JoySit")))
+            if (EquipWheel.UseSitButton.Value && EquipWheel.HotkeyDPad.Value == DPadButton.None && (ZInput.GetButtonDown("JoySit") || ZInput.GetButtonUp("JoySit")))
             {
                 MethodInfo methodInfo = typeof(Player).GetMethod("StopEmote", BindingFlags.NonPublic | BindingFlags.Instance);
                 methodInfo.Invoke(localPlayer, new object[] {});
