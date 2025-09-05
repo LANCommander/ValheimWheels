@@ -98,7 +98,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EpicLootWrapper.cs" />
+    <Compile Include="EquipGui.cs" />
     <Compile Include="EquipWheel.cs" />
+    <Compile Include="EquipWheelUI.cs" />
     <Compile Include="Patcher.cs" />
     <Compile Include="WheelManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
