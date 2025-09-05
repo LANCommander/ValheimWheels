@@ -28,16 +28,6 @@ namespace EquipmentWheel
             }
         }
 
-        public interface IWheel
-        {
-            int GetKeyCountDown();
-            int GetKeyCountPressed();
-            bool IsVisible();
-            void Hide();
-            string GetName();
-            float JoyStickIgnoreTime();
-        }
-
         public static void Activate(IWheel wheel)
         {
             if (!wheel.IsVisible())
