@@ -237,7 +237,7 @@ namespace EquipmentWheel
 
         public void OnInventoryChanged()
         {
-            if (!EquipGui.visible)
+            if (!EquipGui.Visible)
             {
                 return;
             }

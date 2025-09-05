@@ -12,25 +12,26 @@ namespace EquipmentWheel
     public class EquipGui : MonoBehaviour
     {
         private EquipWheelUI ui;
-        public AssetBundle assets;
 
-        public static bool visible = false;
-        public int toggleVisible = 0;
-        public static bool toggleDownWasPressed = false;
+        public AssetBundle Assets;
+
+        public static bool Visible = false;
+        public int ToggleVisible = 0;
+        public static bool ToggleDownWasPressed = false;
 
 
         void Awake()
         {
             LoadAssets();
-            GameObject uiPrefab = assets.LoadAsset<GameObject>("assets/selectionwheel/selectionwheel.prefab");
+            GameObject uiPrefab = Assets.LoadAsset<GameObject>("assets/selectionwheel/selectionwheel.prefab");
             var rect = gameObject.AddComponent<RectTransform>();
 
             var go = Instantiate<GameObject>(uiPrefab, new Vector3(0, 0, 0), transform.rotation, rect);
             ui = (go.AddComponent<EquipWheelUI>());
             go.SetActive(false);
 
-            visible = false;
-            assets.Unload(false);
+            Visible = false;
+            Assets.Unload(false);
         }
 
         void Start()
@@ -58,15 +59,15 @@ namespace EquipmentWheel
             using (MemoryStream mStream = new MemoryStream())
             {
                 wheelAssets.CopyTo(mStream);
-                assets = AssetBundle.LoadFromMemory(mStream.ToArray());
+                Assets = AssetBundle.LoadFromMemory(mStream.ToArray());
             }
         }
 
         public void Hide()
         {
             ui.gameObject.SetActive(false);
-            visible = false;
-            toggleVisible = 0;
+            Visible = false;
+            ToggleVisible = 0;
         }
 
         private void Update()
@@ -113,39 +114,39 @@ namespace EquipmentWheel
                 return;
             }
 
-            if (toggleDownWasPressed)
+            if (ToggleDownWasPressed)
             {
                 if (EquipWheel.IsShortcutUp)
                 {
                     Hide();
-                    toggleDownWasPressed = false;
+                    ToggleDownWasPressed = false;
                     return;
                 }
 
                 return;
             }
 
-            if (EquipWheel.IsShortcutDown && toggleVisible < 2)
-                toggleVisible++;
+            if (EquipWheel.IsShortcutDown && ToggleVisible < 2)
+                ToggleVisible++;
 
-            var toggleDown = EquipWheel.IsShortcutDown && toggleVisible == 2;
+            var toggleDown = EquipWheel.IsShortcutDown && ToggleVisible == 2;
 
             if (EquipWheel.TriggerOnRelease.Value && toggleDown)
             {
                 if (WheelManager.IsActive(EquipWheel.Instance))
                 {
                     UseCurrentItem();
-                    toggleDownWasPressed = true;
+                    ToggleDownWasPressed = true;
                     return;
                 }
             }
 
-            if (toggleVisible > 0 && !toggleDown)
+            if (ToggleVisible > 0 && !toggleDown)
             {
-                if (!visible)
+                if (!Visible)
                 {
                     ui.gameObject.SetActive(true);
-                    visible = true;
+                    Visible = true;
                     WheelManager.Activate(EquipWheel.Instance);
                 }
 
@@ -198,10 +199,10 @@ namespace EquipmentWheel
             {
 
 
-                if (!visible)
+                if (!Visible)
                 {
                     ui.gameObject.SetActive(true);
-                    visible = true;
+                    Visible = true;
                     WheelManager.Activate(EquipWheel.Instance);
                 }
 

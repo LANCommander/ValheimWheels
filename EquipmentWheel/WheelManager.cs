@@ -12,14 +12,10 @@ namespace EquipmentWheel
         public static bool HoverTextVisible = false;
         public static bool PressedOnHovering = false;
 
-
-        public static bool AnyVisible
-        {
-            get
-            {
-                return _wheels.Any(w => w.IsVisible());
-            }
-        }
+        public static bool AnyVisible => _wheels.Any(w => w.IsVisible());
+        public static bool IsActive(IWheel wheel) => wheel.Equals(_activeWheel);
+        public static bool AddWheel(IWheel wheel) => _wheels.Add(wheel);
+        public static bool RemoveWheel(IWheel wheel) => _wheels.Remove(wheel);
 
         public static void Activate(IWheel wheel)
         {
@@ -35,21 +31,6 @@ namespace EquipmentWheel
             }
 
             _activeWheel = wheel;
-        }
-        
-        public static bool IsActive(IWheel wheel)
-        {
-            return wheel.Equals(_activeWheel);
-        }
-
-        public static bool AddWheel(IWheel wheel)
-        {
-            return _wheels.Add(wheel);
-        }
-
-        public static bool RemoveWheel(IWheel wheel)
-        {
-            return _wheels.Remove(wheel);
         }
 
         public static bool BestMatchDown(IWheel wheel)
@@ -72,7 +53,7 @@ namespace EquipmentWheel
             return wheel.Equals(result);
         }
 
-        public static float GetJoyStickIgnoreTime ()
+        public static float GetJoyStickIgnoreTime()
         {
             float time = 0;
 

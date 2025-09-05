@@ -47,24 +47,14 @@ namespace EquipmentWheel
         public static ConfigEntry<string> ItemRegexIgnore;
         public static ConfigEntry<bool> ItemRegexCaseSensitive;
 
+        public static EquipWheel Instance;
 
-        private static EquipWheel instance;
         public static KeyCode ReplacedKey = KeyCode.None;
         public static List<string> ReplacedButtons = new List<string>();
         public static float JoyStickIgnoreTime = 0;
         public static EquipGui Gui;
 
-
-
         public static Color GetHighlightColor => HighlightColor.Value;
-
-        public static EquipWheel Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
 
         public static void Log(string msg)
         {
@@ -130,7 +120,7 @@ namespace EquipmentWheel
 
         public void Awake()
         {
-            instance = this;
+            Instance = this;
 
             /* General */
             ModEnabled = Config.Bind(
@@ -550,7 +540,7 @@ namespace EquipmentWheel
 
         public bool IsVisible()
         {
-            return EquipGui.visible;
+            return EquipGui.Visible;
         }
 
         public void Hide()
