@@ -313,21 +313,14 @@ namespace EquipmentWheel
 
                     var type = item.m_shared.m_itemType;
 
-                    if ((type == EquipWheel.ItemType1.Value || type == EquipWheel.ItemType2.Value ||
-                         type == EquipWheel.ItemType3.Value || type == EquipWheel.ItemType4.Value ||
-                         type == EquipWheel.ItemType5.Value || type == EquipWheel.ItemType6.Value))
-                    {
-                        filteredItems.Add(item);
-                    }
+                    foreach (var itemType in EquipWheel.ItemTypes)
+                        if (type == itemType.Value)
+                            filteredItems.Add(item);
                 }
 
-                var types = new[] {
-                    EquipWheel.ItemType1.Value, EquipWheel.ItemType2.Value, EquipWheel.ItemType3.Value,
-                    EquipWheel.ItemType4.Value, EquipWheel.ItemType5.Value, EquipWheel.ItemType6.Value
-                };
-
-                filteredItems.Sort((a, b) => Array.IndexOf(types, a.m_shared.m_itemType)
-                    .CompareTo(Array.IndexOf(types, b.m_shared.m_itemType)));
+                filteredItems
+                    .Sort((a, b) => Array.IndexOf(EquipWheel.ItemTypes, a.m_shared.m_itemType)
+                    .CompareTo(Array.IndexOf(EquipWheel.ItemTypes, b.m_shared.m_itemType)));
 
                 for (int index = 0; index < 8; index++)
                 {

@@ -42,12 +42,7 @@ namespace EquipmentWheel
 
         public static ConfigEntry<int> InventoryRow;
         public static ConfigEntry<bool> ItemFiltering;
-        public static ConfigEntry<ItemDrop.ItemData.ItemType> ItemType1;
-        public static ConfigEntry<ItemDrop.ItemData.ItemType> ItemType2;
-        public static ConfigEntry<ItemDrop.ItemData.ItemType> ItemType3;
-        public static ConfigEntry<ItemDrop.ItemData.ItemType> ItemType4;
-        public static ConfigEntry<ItemDrop.ItemData.ItemType> ItemType5;
-        public static ConfigEntry<ItemDrop.ItemData.ItemType> ItemType6;
+        public static ConfigEntry<ItemDrop.ItemData.ItemType>[] ItemTypes;
         public static ConfigEntry<string> ItemRegex;
         public static ConfigEntry<string> ItemRegexIgnore;
         public static ConfigEntry<bool> ItemRegexCaseSensitive;
@@ -249,36 +244,38 @@ namespace EquipmentWheel
                 false,
                 "Will scan the whole inventory for items of the specified item types and Regex and show them in the equip wheel");
 
-            ItemType1 = Config.Bind(
+            ItemTypes = new ConfigEntry<ItemDrop.ItemData.ItemType>[6];
+
+            ItemTypes[0] = Config.Bind(
                 "Misc", 
                 "ItemType1", 
                 ItemDrop.ItemData.ItemType.None,
                 "Item type used for filtering items");
 
-            ItemType2 = Config.Bind(
+            ItemTypes[1] = Config.Bind(
                 "Misc", 
                 "ItemType2", ItemDrop.ItemData.ItemType.None,
                 "Item type used for filtering items");
 
-            ItemType3 = Config.Bind(
+            ItemTypes[2] = Config.Bind(
                 "Misc", 
                 "ItemType3", 
                 ItemDrop.ItemData.ItemType.None,
                 "Item type used for filtering items");
 
-            ItemType4 = Config.Bind(
+            ItemTypes[3] = Config.Bind(
                 "Misc", 
                 "ItemType4", 
                 ItemDrop.ItemData.ItemType.None,
                 "Item type used for filtering items");
 
-            ItemType5 = Config.Bind(
+            ItemTypes[4] = Config.Bind(
                 "Misc", 
                 "ItemType5", 
                 ItemDrop.ItemData.ItemType.None,
                 "Item type used for filtering items");
 
-            ItemType6 = Config.Bind(
+            ItemTypes[5] = Config.Bind(
                 "Misc", 
                 "ItemType6", 
                 ItemDrop.ItemData.ItemType.None,
