@@ -65,7 +65,7 @@ namespace EquipmentWheel
         {
             get
             {
-                if (EquipWheel.HotkeyDPad.Value == WheelManager.DPadButton.None)
+                if (EquipWheel.HotkeyDPad.Value == DPadButton.None)
                 {
                     var x = ZInput.GetJoyLeftStickX();
                     var y = ZInput.GetJoyLeftStickY();
@@ -105,7 +105,7 @@ namespace EquipmentWheel
         {
             get
             {
-                if (EquipWheel.HotkeyDPad.Value == WheelManager.DPadButton.None)
+                if (EquipWheel.HotkeyDPad.Value == DPadButton.None)
                 {
 
                     var x = ZInput.GetJoyLeftStickX();
@@ -131,7 +131,7 @@ namespace EquipmentWheel
                 if (ZInput.IsGamepadActive())
                 {
 
-                    if (EquipWheel.HotkeyDPad.Value == WheelManager.DPadButton.None)
+                    if (EquipWheel.HotkeyDPad.Value == DPadButton.None)
                     {
 
                         var x = ZInput.GetJoyLeftStickX();
