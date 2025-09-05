@@ -12,13 +12,6 @@ namespace EquipmentWheel
         public static bool HoverTextVisible = false;
         public static bool PressedOnHovering = false;
 
-        public enum DPadButton
-        {
-            None,
-            Left,
-            Right,
-            LeftOrRight
-        }
 
         public static bool AnyVisible
         {
